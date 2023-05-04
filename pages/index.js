@@ -12,7 +12,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const model = 'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb';
+    const model =
+      'prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb';
     const urlSearchParams = new URLSearchParams(window.location.search);
     const m = urlSearchParams.get('m');
     const direct = urlSearchParams.get('direct');
@@ -26,31 +27,34 @@ export default function Home() {
     setInputText(e.target.value);
   }, []);
 
-  const fetchImage = useCallback(async (prompt) => {
-    setIsLoading(true);
-    setImageUrl('');
-    setPromptText('');
-    try {
-      const response = await fetch(proxyUrl || '/api/text2image', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors', 
-        body: JSON.stringify({
-          prompt,
-          image_model: imageModel,
-          direct,
-        }),
-      });
-      const data = await response.json();
-      setImageUrl(data.url);
-      setPromptText(data.text);
-    } catch (error) {
-      console.error('Error fetching image:', error);
-    }
-    setIsLoading(false);
-  }, [ proxyUrl ]);
+  const fetchImage = useCallback(
+    async (prompt) => {
+      setIsLoading(true);
+      setImageUrl('');
+      setPromptText('');
+      try {
+        const response = await fetch(proxyUrl || '/api/text2image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
+          body: JSON.stringify({
+            prompt,
+            image_model: imageModel,
+            direct,
+          }),
+        });
+        const data = await response.json();
+        setImageUrl(data.url);
+        setPromptText(data.text);
+      } catch (error) {
+        console.error('Error fetching image:', error);
+      }
+      setIsLoading(false);
+    },
+    [proxyUrl]
+  );
 
   return (
     <>
@@ -71,12 +75,20 @@ export default function Home() {
               onChange={handleInputChange}
               placeholder="Enter text here"
             />
-            <button className={styles.button} onClick={() => fetchImage(inputText)}>
+            <button
+              className={styles.button}
+              onClick={() => fetchImage(inputText)}
+            >
               {isLoading ? 'Loading...' : 'text2image'}
             </button>
+            {promptText && (
+              <p className={styles.promptText}>Prompt: {promptText}</p>
+            )}
           </div>
-          {promptText && <p className={styles.promptText}>Prompt: {promptText}</p>}
-          {imageUrl && <img className={styles.image} src={imageUrl} alt={promptText} />}
+
+          {imageUrl && (
+            <img className={styles.image} src={imageUrl} alt={promptText} />
+          )}
         </div>
       </main>
     </>
