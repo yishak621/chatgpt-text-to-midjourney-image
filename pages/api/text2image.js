@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     if (!direct) {
       const openai = new OpenAIApi(new Configuration({ apiKey: OPENAI_KEY }));
       const completion = await openai.createCompletion({
-        model: 'text-davinci-003',
+        model: 'gpt-3.5-turbo',
         prompt: content,
         temperature: 1,
         n: 1,

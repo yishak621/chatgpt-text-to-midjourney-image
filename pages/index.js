@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Text2Image</title>
+        <title>GPT + Midjourney</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
@@ -79,16 +79,22 @@ export default function Home() {
               className={styles.button}
               onClick={() => fetchImage(inputText)}
             >
-              {isLoading ? 'Loading...' : 'text2image'}
+              {isLoading ? 'Loading...' : 'Generate'}
             </button>
             {promptText && (
               <p className={styles.promptText}>Prompt: {promptText}</p>
             )}
           </div>
+          <div className={styles.playground}>
+            <div className={styles.headerPlayground}>
+              <h2>Playground - Image</h2>
+              <button className={styles.button}>Download</button>
+            </div>
 
-          {imageUrl && (
-            <img className={styles.image} src={imageUrl} alt={promptText} />
-          )}
+            {imageUrl && (
+              <img className={styles.image} src={imageUrl} alt={promptText} />
+            )}
+          </div>
         </div>
       </main>
     </>
